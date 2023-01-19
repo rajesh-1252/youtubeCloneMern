@@ -7,7 +7,7 @@ import { allValuesError } from "../utils/allValuesError";
 const register = async (req: Request, res: Response) => {
   const { userName, email, password } = req.body;
 
-  if (!userName || !email || !password) {
+  if (!email || !password) {
     throw new BadRequestError("Please provide all the values");
   }
   const emailAlreadyExists = await userModel.findOne({ email });

@@ -6,8 +6,6 @@ import { BadRequestError } from "../error";
 const UserSchema: Schema = new Schema({
   userName: {
     type: String,
-    required: [true, "Please Provide Name"],
-    // unique: [true, "Account with this username already exist"],
   },
   email: {
     type: String,

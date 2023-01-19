@@ -1,6 +1,7 @@
 import express from "express";
 import "express-async-errors";
 import { Application, Request, Response, NextFunction } from "express";
+import cors from "cors";
 import connectDb from "./db/connectDb";
 import dotenv from "dotenv";
 dotenv.config();
@@ -17,6 +18,7 @@ const app: Application = express();
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(fileUpload({ useTempFiles: true }));
+app.use(cors());
 
 //  own middleware
 

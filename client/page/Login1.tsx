@@ -3,31 +3,46 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Wrappers from "../assets/wrappers/Login.Wrappers";
 import FormRow from "../components/FormRow";
-import { changeInitialState } from "../features/register/registerSlice";
-import { RootState } from "../store";
+import { selectErrors } from "../features/errors/errorsSlice";
+import {
+  getAllRegisterState,
+  handleChange1,
+  registerUser,
+} from "../features/register/registerSlice";
+import { AppDispatch } from "../store";
 
 const Login1 = () => {
-  const { userName, email, password, confirmPassword, isMember } = useSelector(
-    (state: RootState) => state.registerUser
-  );
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const { userName, email, password, confirmPassword, isMember } =
+    useSelector(getAllRegisterState);
+  const errors = useSelector(selectErrors);
+  console.log({ errors });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeInitialState());
-    // setData({ ...data, [e.target.name]: e.target.value });
+    const obj: { name: string; value: string } = {
+      name: e.target.name,
+      value: e.target.value,
+    };
+    dispatch(handleChange1(obj));
   };
+  const toggleMember = () => {
+    dispatch(handleChange1({ name: "isMember", value: !isMember }));
+  };
+
   if (password !== confirmPassword) {
     console.log("password doest match");
   }
   if (password === confirmPassword) {
     console.log("password match");
   }
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // await axios.post("http://localhost:4000/api/v1/auth/register", data);
+    dispatch(
+      registerUser({ userName, email, password, confirmPassword, isMember })
+    );
   };
 
-  const toggleMember = () => {};
   return (
     <Wrappers>
       <form action="" className="form" onSubmit={handleSubmit}>
